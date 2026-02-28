@@ -1,0 +1,66 @@
+---
+title: "Gallery"
+execute: 
+  eval: true
+  echo: false
+---
+
+```{r}
+set.seed(as.numeric(Sys.Date()))
+raw_data <- data.frame(image = list.files("contributions/", pattern = "*.png|*.jpg", recursive = TRUE)) |> 
+  dplyr::mutate(image = paste0("contributions/", image),
+         alt = "")
+raw_data <- raw_data[sample(1:nrow(raw_data)),]
+raw_data$col_num <- rep(1:3, times = ceiling(nrow(raw_data)/3))[1:nrow(raw_data)]
+```
+
+```{r}
+generate_snippet <- function(i, data = raw_data){
+  glue::glue(
+    '<div class="viz-card">
+<a href="{data$image[i]}" class="glightbox"><img src="{data$image[i]}" class="img-fluid" alt="{data$alt[i]}"></a>
+</div>'
+  )
+}
+```
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-4}
+
+```{r}
+#| output: asis
+col1_data <- raw_data[raw_data$col_num == 1,]
+for (i in 1:nrow(col1_data)) {
+  cat(generate_snippet(i, data = col1_data))
+}
+```
+
+:::
+
+::: {.g-col-12 .g-col-md-4}
+
+```{r}
+#| output: asis
+col2_data <- raw_data[raw_data$col_num == 2,]
+for (i in 1:nrow(col2_data)) {
+  cat(generate_snippet(i, data = col2_data))
+}
+```
+
+
+:::
+
+::: {.g-col-12 .g-col-md-4}
+
+```{r}
+#| output: asis
+col3_data <- raw_data[raw_data$col_num == 3,]
+for (i in 1:nrow(col3_data)) {
+  cat(generate_snippet(i, data = col3_data))
+}
+```
+
+:::
+
+:::

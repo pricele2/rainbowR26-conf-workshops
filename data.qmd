@@ -1,0 +1,27 @@
+---
+title: "Data"
+---
+
+The data has been pre-processed to enable you to focus on visualisation instead of data cleaning.
+
+{{< include data/README.md >}}
+
+## Loading data
+
+You can load the main, pre-cleaned data sets using:
+
+```{r}
+#| file: examples/00_load_data.R
+#| eval: false
+#| echo: true
+```
+
+## Raw data sources
+
+{{< include data/raw-data/README.md >}}
+
+### Spatial data
+
+If you want to make maps, you will also need spatial data for the boundaries of the different regions.
+
+{{< include data/spatial-data/README.md >}}

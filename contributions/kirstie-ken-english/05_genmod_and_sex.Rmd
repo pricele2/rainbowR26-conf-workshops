@@ -1,0 +1,53 @@
+---
+title: 'rainbowR: Gender modality & sex'
+author: "Kirstie Ken English"
+date: "2026-02-17"
+output: html_document
+---
+
+### Inputting the data 
+
+ONS had not released cross sectional data for gender modality by sex but did produce a table on these variables, which is available [here](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/genderidentity/datasets/genderidentityeightcategoriesbysexenglandandwalescensus2021).
+
+The following code indicates how I input this into R. This could be used to create bar plots of any two categorical variables.
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+sex <- c("Male", "Female", "Male", "Female")
+genmod <- c("Trans Man", "Trans Man", "Trans Woman", "Trans Woman")
+frequencies <- c(32695, 15740, 16100, 31470)
+
+
+sex_data <- rep(sex, times = frequencies)
+genmod_data <- rep(genmod, times = frequencies)
+
+
+genmodsex <- data.frame(sex = sex_data, genmod = genmod_data)
+
+table(genmodsex$sex, genmodsex$genmod)
+```
+
+### Visualising the data
+
+I then created a basic bar chart. This bar chart indicates that despite the use of documented or “legal sex” guidance in the 2021 census at least 67% of people who indicated they were trans men or women in the census responded to the sex question based on how they live. 
+
+```{r Bar chart}
+genmodsex %>%
+  ggplot(aes(genmod, fill = sex)) +
+  geom_bar(position = "dodge") +
+  labs(
+    title = "How trans men & women responded to the sex question in England & Wales",
+    x = "Gender",
+    y = "Count",
+    caption = "2021 Census of England & Wales (ONS, 2023)"
+  ) +
+  scale_fill_manual("Sex", values = c("Female" = "#16552f", "Male" = "#678D75")) +
+  theme(
+    panel.background = element_rect(fill = "transparent", color = NA),
+    plot.background = element_rect(fill = "transparent", color = NA),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold", hjust = 0.25)
+  )
+```
